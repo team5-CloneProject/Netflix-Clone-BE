@@ -38,4 +38,10 @@ public class MovieController {
         return movieService.movieNowPlaying(page);
     }
 
+    @Operation(summary = "영화 검색 메서드", description = "영화 검색 메서드 입니다.")
+    @GetMapping("/movie/search")
+    public ApiResponseDto<MovieResponseDto> movieNowPlaying(@RequestParam int page,@RequestParam String query) {
+        return movieService.movieSearch(page,query);
+    }
+
 }

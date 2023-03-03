@@ -32,5 +32,10 @@ public class MovieService {
         return ResponseUtils.ok(movieResponse);
     }
 
+    public ApiResponseDto<MovieResponseDto> movieSearch(int page,String query) {
+        RestTemplate restTemplate = new RestTemplate();
+        MovieResponseDto movieResponse = restTemplate.getForObject("https://api.themoviedb.org/3/search/multi?api_key="+key+"&language=ko-KR&query="+query+"&page="+page+"&include_adult=false&region=KR", MovieResponseDto.class);
+        return ResponseUtils.ok(movieResponse);
+    }
 
 }
