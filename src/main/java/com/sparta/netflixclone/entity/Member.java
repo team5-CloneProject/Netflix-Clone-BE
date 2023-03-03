@@ -36,5 +36,14 @@ public class Member {
         this.image = image;
     }
 
+    public static Member of(String email, String password, String nickname, String image) {
+        return Member.builder()
+                .email(email)
+                .password(password)
+                .name(nickname)
+                .image(image)
+                .build();
+    }
+
 
 }
