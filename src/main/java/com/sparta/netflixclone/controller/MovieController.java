@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
-
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "영화조회 API", description = "영화조회 API 입니다.")
@@ -20,14 +19,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class MovieController {
 
     private final MovieService movieService;
+
     @Operation(summary = "영화 인기순 메서드", description = "영화 인기순 메서드 입니다.")
     @GetMapping("/movie/popular")
-    public ApiResponseDto<MovieResponseDto> moviePopular(@RequestParam int page){
-        return  movieService.moviePopular(page);
+    public ApiResponseDto<MovieResponseDto> moviePopular(@RequestParam int page) {
+        return movieService.moviePopular(page);
     }
+
     @Operation(summary = "영화 평점순 메서드", description = "영화 평점순 메서드 입니다.")
     @GetMapping("/movie/toprated")
-    public ApiResponseDto<MovieResponseDto> movieTopRated(@RequestParam int page){
-        return  movieService.movieTopRated(page);
+    public ApiResponseDto<MovieResponseDto> movieTopRated(@RequestParam int page) {
+        return movieService.movieTopRated(page);
     }
+
+    @Operation(summary = "영화 현재 상영 조회 메서드", description = "영화 현재 상영중 조회 메서드 입니다.")
+    @GetMapping("/movie/nowplaying")
+    public ApiResponseDto<MovieResponseDto> movieNowPlaying(@RequestParam int page) {
+        return movieService.movieNowPlaying(page);
+    }
+
 }
