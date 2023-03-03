@@ -37,6 +37,12 @@ public class MovieController {
     public ApiResponseDto<MovieResponseDto> movieNowPlaying(@RequestParam int page) {
         return movieService.movieNowPlaying(page);
     }
+    @Operation(summary = "TV 인기순 메서드", description = "TV 인기순 메서드 입니다.")
+    @GetMapping("/movie/tvpopular")
+    public ApiResponseDto<MovieResponseDto> movieTvPopular(@RequestParam int page) {
+        return movieService.movieTvPopular(page);
+    }
+
 
     @Operation(summary = "영화 검색 메서드", description = "영화 검색 메서드 입니다.")
     @GetMapping("/movie/search")
