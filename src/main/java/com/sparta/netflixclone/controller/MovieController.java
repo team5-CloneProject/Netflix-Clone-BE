@@ -23,8 +23,11 @@ public class MovieController {
     @Operation(summary = "영화 인기순 메서드", description = "영화 인기순 메서드 입니다.")
     @GetMapping("/movie/popular")
     public ApiResponseDto<MovieResponseDto> moviePopular(@RequestParam int page){
-
-        return  movieService.movieLatestView(page);
-
+        return  movieService.moviePopular(page);
+    }
+    @Operation(summary = "영화 평점순 메서드", description = "영화 평점순 메서드 입니다.")
+    @GetMapping("/movie/toprated")
+    public ApiResponseDto<MovieResponseDto> movieTopRated(@RequestParam int page){
+        return  movieService.movieTopRated(page);
     }
 }

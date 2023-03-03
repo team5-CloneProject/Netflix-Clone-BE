@@ -13,12 +13,15 @@ import org.springframework.web.client.RestTemplate;
 public class MovieService {
     @Value("${tmdb.key}")
     private String key;
-    public ApiResponseDto<MovieResponseDto> movieLatestView(int page) {
-
+    public ApiResponseDto<MovieResponseDto> moviePopular(int page) {
         RestTemplate restTemplate = new RestTemplate();
-        MovieResponseDto movieResponse = restTemplate.getForObject("https://api.themoviedb.org/3/movie/popular?api_key="+key+"&language=ko-KR&page="+page, MovieResponseDto.class);
-
+        MovieResponseDto movieResponse = restTemplate.getForObject("https://api.themoviedb.org/3/movie/popular?api_key="+key+"&language=ko-KR&page="+page+"&region=KR", MovieResponseDto.class);
         return ResponseUtils.ok(movieResponse);
+    }
 
+    public ApiResponseDto<MovieResponseDto> movieTopRated(int page) {
+        RestTemplate restTemplate = new RestTemplate();
+        MovieResponseDto movieResponse = restTemplate.getForObject("https://api.themoviedb.org/3/movie/top_rated?api_key="+key+"&language=ko-KR&page="+page+"&region=KR", MovieResponseDto.class);
+        return ResponseUtils.ok(movieResponse);
     }
 }
