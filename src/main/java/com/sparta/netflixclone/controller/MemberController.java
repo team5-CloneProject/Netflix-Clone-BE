@@ -3,6 +3,7 @@ package com.sparta.netflixclone.controller;
 import com.sparta.netflixclone.common.ApiResponseDto;
 import com.sparta.netflixclone.common.ResponseUtils;
 import com.sparta.netflixclone.common.SuccessResponse;
+import com.sparta.netflixclone.dto.LoginRequestDto;
 import com.sparta.netflixclone.dto.SignupRequestDto;
 import com.sparta.netflixclone.entity.enumclass.ExceptionEnum;
 import com.sparta.netflixclone.exception.CustomException;
@@ -41,5 +42,10 @@ public class MemberController {
             throw new CustomException(ExceptionEnum.INVALID_EMAIL_REG);
         }
         return memberService.signup(signupRequestDto);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
+        return memberService.login(loginRequestDto);
     }
 }
