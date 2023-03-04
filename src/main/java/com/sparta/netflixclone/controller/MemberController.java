@@ -48,4 +48,11 @@ public class MemberController {
     public ResponseEntity<ApiResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
         return memberService.login(loginRequestDto);
     }
+
+    @GetMapping("/{email}")
+    public ResponseEntity<ApiResponseDto> getMemberByEmail(@PathVariable String email) {
+        // email에 해당하는 멤버 정보를 조회하는 로직 구현
+        return memberService.checkEmail(email);
+    }
+
 }
