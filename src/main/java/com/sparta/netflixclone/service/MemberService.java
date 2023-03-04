@@ -62,4 +62,13 @@ public class MemberService {
                 .headers(headers)
                 .body(ApiResponseDto.of(true, HttpStatus.OK));
     }
+
+    public ResponseEntity<ApiResponseDto> checkEmail(String email) {
+        Optional<Member> foundUsername = memberRepository.findByEmail(email);
+        if (foundUsername.isPresent()) {
+            throw new CustomException(DUPLICATE_USER);
+        }
+        return ResponseEntity.ok()
+                .body(ApiResponseDto.of(true,HttpStatus.OK));
+    }
 }
