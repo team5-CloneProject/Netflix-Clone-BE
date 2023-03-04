@@ -1,12 +1,14 @@
 package com.sparta.netflixclone.service;
 
 import com.sparta.netflixclone.common.ApiResponseDto;
+import com.sparta.netflixclone.dto.LoginRequestDto;
 import com.sparta.netflixclone.dto.SignupRequestDto;
 import com.sparta.netflixclone.entity.Member;
 import com.sparta.netflixclone.exception.CustomException;
 import com.sparta.netflixclone.jwt.JwtUtil;
 import com.sparta.netflixclone.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,5 +40,26 @@ public class MemberService {
         memberRepository.save(member);
         return ResponseEntity.ok()
                 .body(ApiResponseDto.of(true, HttpStatus.CREATED));
+    }
+
+    public ResponseEntity<ApiResponseDto> login(LoginRequestDto loginRequestDto) {
+        String email = loginRequestDto.getEmail();
+        String password = loginRequestDto.getPassword();
+
+        Optional<Member> user = memberRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            throw new CustomException(NOT_EXIST_USER);
+        }
+
+        if (!passwordEncoder.matches(password, user.get().getPassword())) {
+            throw new CustomException(PASSWORD_WRONG);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.get().getEmail()));
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(ApiResponseDto.of(true, HttpStatus.OK));
     }
 }
