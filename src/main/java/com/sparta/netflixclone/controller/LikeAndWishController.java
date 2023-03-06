@@ -4,7 +4,6 @@ import com.sparta.netflixclone.common.ApiResponseDto;
 import com.sparta.netflixclone.common.ResponseUtils;
 import com.sparta.netflixclone.common.SuccessResponse;
 import com.sparta.netflixclone.dto.LikeRequestDto;
-import com.sparta.netflixclone.entity.enumclass.LikeStatus;
 import com.sparta.netflixclone.security.UserDetailsImpl;
 import com.sparta.netflixclone.service.LikeAndWishService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,7 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +41,10 @@ public class LikeAndWishController {
     @PutMapping("/movies/dislikes/{id}")
     public ApiResponseDto<SuccessResponse> createDislike(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody LikeRequestDto likeRequestDto) {
         return likeAndWishService.createDisLike(id, userDetails.getUser(), likeRequestDto);
+    }
+
+    @PostMapping("/post/like/{id}")
+    public ApiResponseDto<SuccessResponse> postLike(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return likeAndWishService.postLike(id, userDetails.getUser());
     }
 }
