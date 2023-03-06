@@ -39,7 +39,7 @@ public class LikeAndWishService {
                 return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"LIKE로 변경완료"));
             }
             likesRepository.delete(movieLike.get());
-            return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"LIKE DELETE 변경완료"));
+            return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"LIKE DELETE 완료"));
         }
 
         likesRepository.saveAndFlush(Likes.of(id, member, likeRequestDto.getStatus().toString()));
@@ -59,7 +59,7 @@ public class LikeAndWishService {
         if (movieLike.isPresent()) {
             if(movieLike.get().getStatus().equals("LIKE")) {
                 movieLike.get().update(likeRequestDto.getStatus().toString());
-                return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"DISLIKE 변경 완료"));
+                return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"DISLIKE로 변경 완료"));
             }
             likesRepository.delete(movieLike.get());
             return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"DISLIKE DELETE 완료"));

@@ -4,6 +4,7 @@ import com.sparta.netflixclone.common.ApiResponseDto;
 import com.sparta.netflixclone.common.ResponseUtils;
 import com.sparta.netflixclone.common.SuccessResponse;
 import com.sparta.netflixclone.dto.LoginRequestDto;
+import com.sparta.netflixclone.dto.MovieResponseDto;
 import com.sparta.netflixclone.dto.SignupRequestDto;
 import com.sparta.netflixclone.entity.enumclass.ExceptionEnum;
 import com.sparta.netflixclone.exception.CustomException;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 
@@ -37,7 +39,7 @@ public class MemberController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponseDto> signup(@Valid @RequestBody SignupRequestDto signupRequestDto, BindingResult bindingResult) {
+    public ApiResponseDto<SuccessResponse> signup(@Valid @RequestBody SignupRequestDto signupRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new CustomException(ExceptionEnum.INVALID_EMAIL_REG);
         }
@@ -45,12 +47,12 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
-        return memberService.login(loginRequestDto);
+    public ApiResponseDto<SuccessResponse> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+        return memberService.login(loginRequestDto, response);
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponseDto> getMemberByEmail(@RequestParam String email) {
+    public ApiResponseDto<SuccessResponse> getMemberByEmail(@RequestParam String email) {
         // email에 해당하는 멤버 정보를 조회하는 로직 구현
         return memberService.checkEmail(email);
     }
