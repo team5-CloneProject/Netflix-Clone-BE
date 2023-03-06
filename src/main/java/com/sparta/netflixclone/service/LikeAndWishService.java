@@ -4,25 +4,27 @@ import com.sparta.netflixclone.common.ApiResponseDto;
 import com.sparta.netflixclone.common.ResponseUtils;
 import com.sparta.netflixclone.common.SuccessResponse;
 import com.sparta.netflixclone.dto.LikeRequestDto;
-import com.sparta.netflixclone.entity.enumclass.LikeStatus;
 import com.sparta.netflixclone.entity.Likes;
 import com.sparta.netflixclone.entity.Member;
+import com.sparta.netflixclone.entity.WishList;
+import com.sparta.netflixclone.entity.enumclass.LikeStatus;
 import com.sparta.netflixclone.exception.CustomException;
 import com.sparta.netflixclone.repository.LikesRepository;
+import com.sparta.netflixclone.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
 
-import static com.sparta.netflixclone.entity.enumclass.ExceptionEnum.*;
+import static com.sparta.netflixclone.entity.enumclass.ExceptionEnum.WRONG_VALUE;
 
 @Service
 @RequiredArgsConstructor
 public class LikeAndWishService {
     private final LikesRepository likesRepository;
+    private final WishListRepository wishListRepository;
     @Transactional
     public ApiResponseDto<SuccessResponse> createLike(Long id, Member member, LikeRequestDto likeRequestDto) {
         if (!likeRequestDto.getStatus().equals(LikeStatus.LIKE)) {
@@ -68,6 +70,15 @@ public class LikeAndWishService {
     }
 
 
+    public ApiResponseDto<SuccessResponse> postLike(Long id, Member member) {
+        Optional<WishList> postLike = wishListRepository.findByMovieIdAndMemberId(id, member.getId());
 
+        if (postLike.isPresent()) {
+            wishListRepository.delete(postLike.get());
+            return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"찜하기 취소 완료"));
+        }
 
+        wishListRepository.saveAndFlush(WishList.of(id, member));
+        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"찜하기 등록 완료"));
+    }
 }

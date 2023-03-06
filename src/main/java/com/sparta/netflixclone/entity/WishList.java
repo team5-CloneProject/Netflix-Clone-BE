@@ -21,13 +21,19 @@ public class WishList {
     @ManyToOne
     Member member;
 
-    @Column(nullable = false)
-    private boolean status;
+//    @Column(nullable = false)
+//    private boolean status;
 
     @Builder
-    public WishList(Long movieId, Member member, boolean status) {
+    public WishList(Long movieId, Member member) {
         this.movieId = movieId;
         this.member = member;
-        this.status = status;
+    }
+
+    public static WishList of(Long movieId, Member member) {
+        return WishList.builder()
+                .movieId(movieId)
+                .member(member)
+                .build();
     }
 }
