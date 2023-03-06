@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "좋아요, 찜하기", description = "좋아요, 찜하기 API 입니다.")
-@RequestMapping("/api/movie")
+@RequestMapping("/api")
 public class LikeAndWishController {
 
     private final LikeAndWishService likeAndWishService;
@@ -34,13 +34,13 @@ public class LikeAndWishController {
 
     }
 
-    @PutMapping("/likes/{id}")
+    @PutMapping("/movies/likes/{id}")
     public ApiResponseDto<SuccessResponse> createLike(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody LikeRequestDto likeRequestDto) {
         return likeAndWishService.createLike(id, userDetails.getUser(), likeRequestDto);
     }
 
 
-    @PutMapping("/dislikes/{id}")
+    @PutMapping("/movies/dislikes/{id}")
     public ApiResponseDto<SuccessResponse> createDislike(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody LikeRequestDto likeRequestDto) {
         return likeAndWishService.createDisLike(id, userDetails.getUser(), likeRequestDto);
     }
