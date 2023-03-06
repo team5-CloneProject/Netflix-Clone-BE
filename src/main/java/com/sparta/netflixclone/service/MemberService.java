@@ -1,7 +1,10 @@
 package com.sparta.netflixclone.service;
 
 import com.sparta.netflixclone.common.ApiResponseDto;
+import com.sparta.netflixclone.common.ResponseUtils;
+import com.sparta.netflixclone.common.SuccessResponse;
 import com.sparta.netflixclone.dto.LoginRequestDto;
+import com.sparta.netflixclone.dto.MovieResponseDto;
 import com.sparta.netflixclone.dto.SignupRequestDto;
 import com.sparta.netflixclone.entity.Member;
 import com.sparta.netflixclone.exception.CustomException;
@@ -14,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 import static com.sparta.netflixclone.entity.enumclass.ExceptionEnum.*;
@@ -25,7 +29,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public ResponseEntity<ApiResponseDto> signup(SignupRequestDto signupRequestDto) {
+    public ApiResponseDto<SuccessResponse> signup(SignupRequestDto signupRequestDto) {
         String email = signupRequestDto.getEmail();
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
         String nickname = signupRequestDto.getNickname();
@@ -38,11 +42,10 @@ public class MemberService {
 
         Member member = Member.of(email, password, nickname, image);
         memberRepository.save(member);
-        return ResponseEntity.ok()
-                .body(ApiResponseDto.of(true, HttpStatus.CREATED));
+        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.CREATED,"회원가입 완료"));
     }
 
-    public ResponseEntity<ApiResponseDto> login(LoginRequestDto loginRequestDto) {
+    public ApiResponseDto<SuccessResponse> login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
         String email = loginRequestDto.getEmail();
         String password = loginRequestDto.getPassword();
 
@@ -55,20 +58,17 @@ public class MemberService {
             throw new CustomException(PASSWORD_WRONG);
         }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.get().getEmail()));
+        //HttpHeaders headers = new HttpHeaders();
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.get().getEmail()));
 
-        return ResponseEntity.ok()
-                .headers(headers)
-                .body(ApiResponseDto.of(true, HttpStatus.OK));
+        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"회원가입 완료"));
     }
 
-    public ResponseEntity<ApiResponseDto> checkEmail(String email) {
+    public ApiResponseDto<SuccessResponse> checkEmail(String email) {
         Optional<Member> foundUsername = memberRepository.findByEmail(email);
         if (foundUsername.isPresent()) {
             throw new CustomException(DUPLICATE_USER);
         }
-        return ResponseEntity.ok()
-                .body(ApiResponseDto.of(true,HttpStatus.OK));
+        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"사용가능한 이메일입니다."));
     }
 }
