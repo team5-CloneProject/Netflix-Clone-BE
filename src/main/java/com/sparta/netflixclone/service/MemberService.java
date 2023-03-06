@@ -61,7 +61,7 @@ public class MemberService {
         //HttpHeaders headers = new HttpHeaders();
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.get().getEmail()));
 
-        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"회원가입 완료"));
+        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"로그인 완료"));
     }
 
     public ApiResponseDto<SuccessResponse> checkEmail(String email) {
