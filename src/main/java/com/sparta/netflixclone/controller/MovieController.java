@@ -49,5 +49,4 @@ public class MovieController {
     public ApiResponseDto<MovieResponseDto> movieNowPlaying(@RequestParam int page,@RequestParam String query) {
         return movieService.movieSearch(page,query);
     }
-
 }
