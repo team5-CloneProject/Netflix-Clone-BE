@@ -45,5 +45,8 @@ public class Member {
                 .build();
     }
 
-
+    public void update(String profileUrl, String nickname){
+        this.image = profileUrl;
+        this.nickname = nickname;
+    }
 }
