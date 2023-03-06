@@ -49,8 +49,8 @@ public class MemberController {
         return memberService.login(loginRequestDto);
     }
 
-    @GetMapping("/{email}")
-    public ResponseEntity<ApiResponseDto> getMemberByEmail(@PathVariable String email) {
+    @GetMapping
+    public ResponseEntity<ApiResponseDto> getMemberByEmail(@RequestParam String email) {
         // email에 해당하는 멤버 정보를 조회하는 로직 구현
         return memberService.checkEmail(email);
     }
