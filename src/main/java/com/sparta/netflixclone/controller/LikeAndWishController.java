@@ -40,4 +40,8 @@ public class LikeAndWishController {
     }
 
 
+    @PutMapping("/dislikes/{id}")
+    public ApiResponseDto<SuccessResponse> createDislike(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody LikeRequestDto likeRequestDto) {
+        return likeAndWishService.createDisLike(id, userDetails.getUser(), likeRequestDto);
+    }
 }

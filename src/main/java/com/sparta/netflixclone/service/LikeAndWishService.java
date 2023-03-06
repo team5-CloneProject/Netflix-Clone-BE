@@ -46,6 +46,27 @@ public class LikeAndWishService {
 
 
 
+    @Transactional
+    public ApiResponseDto<SuccessResponse> createDisLike(Long id, Member member, LikeRequestDto likeRequestDto) {
+        if (!likeRequestDto.getStatus().equals(LikeStatus.DISLIKE)) {
+            throw new CustomException(WRONG_VALUE);
+        }
+
+        Optional<Likes> movieLike = likesRepository.findByMovieIdAndMemberId(id, member.getId());
+
+        if (movieLike.isPresent()) {
+            if(movieLike.get().getStatus().equals("LIKE")) {
+                movieLike.get().update(likeRequestDto.getStatus().toString());
+                return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"DISLIKE 변경 완료"));
+            }
+            likesRepository.delete(movieLike.get());
+            return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"DISLIKE DELETE 완료"));
+        }
+
+        likesRepository.saveAndFlush(Likes.of(id, member, likeRequestDto.getStatus().toString()));
+        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"DISLIKE 저장완료"));
+    }
+
 
 
 
