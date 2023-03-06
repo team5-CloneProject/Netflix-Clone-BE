@@ -1,14 +1,13 @@
 package com.sparta.netflixclone.entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.sparta.netflixclone.dto.LikeRequestDto;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Likes {
     @Id
@@ -29,5 +28,17 @@ public class Likes {
         this.movieId = movieId;
         this.member = member;
         this.status = status;
+    }
+
+    public static Likes of(Long movieId, Member member, String status) {
+        return Likes.builder()
+                .movieId(movieId)
+                .member(member)
+                .status(status)
+                .build();
+    }
+
+    public void update(String statusUpdate) {
+        this.status = statusUpdate;
     }
 }

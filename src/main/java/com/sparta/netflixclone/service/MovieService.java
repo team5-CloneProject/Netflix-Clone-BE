@@ -3,10 +3,16 @@ package com.sparta.netflixclone.service;
 import com.sparta.netflixclone.common.ApiResponseDto;
 import com.sparta.netflixclone.common.ResponseUtils;
 import com.sparta.netflixclone.dto.MovieResponseDto;
+import com.sparta.netflixclone.entity.Likes;
+import com.sparta.netflixclone.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
