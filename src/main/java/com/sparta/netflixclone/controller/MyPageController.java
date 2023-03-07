@@ -2,15 +2,13 @@ package com.sparta.netflixclone.controller;
 
 import com.sparta.netflixclone.common.ApiResponseDto;
 import com.sparta.netflixclone.common.SuccessResponse;
-import com.sparta.netflixclone.dto.MemberResposeDto;
+import com.sparta.netflixclone.dto.MemberResponseDto;
 import com.sparta.netflixclone.entity.Member;
 import com.sparta.netflixclone.entity.enumclass.ExceptionEnum;
 import com.sparta.netflixclone.exception.CustomException;
 
 import com.sparta.netflixclone.security.UserDetailsImpl;
-import com.sparta.netflixclone.service.MemberService;
 import com.sparta.netflixclone.service.MyPageService;
-import com.sparta.netflixclone.service.S3Upload;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -41,14 +39,14 @@ public class MyPageController {
     }
 
     @PostMapping("/mypage")
-    public ApiResponseDto<Member> uploadFile(@RequestParam("images") MultipartFile multipartFile, @RequestParam("nickname") String nickname, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+    public ApiResponseDto<SuccessResponse> uploadFile(@RequestParam("images") MultipartFile multipartFile, @RequestParam("nickname") String nickname, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         //return s3Upload.upload(multipartFile);
         return myPageService.profileSave(multipartFile, nickname, userDetails.getMember());
     }
 
 
     @GetMapping("/mypage")
-    public ApiResponseDto<MemberResposeDto> getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ApiResponseDto<MemberResponseDto> getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return myPageService.getProfile(userDetails.getMember());
     }
 }

@@ -41,7 +41,7 @@ public class S3Upload {
             final String ext = origName.substring(origName.lastIndexOf('.'));
             //이미지만
             if(!(ext.equals(".png")||ext.equals(".jpg"))){
-                throw new CustomException(ExceptionEnum.WRONG_VALUE);
+                throw new CustomException(ExceptionEnum.WRONG_IMAGE_VALUE);
             }
             // 파일이름 암호화
             final String saveFileName = getUuid() + ext;
