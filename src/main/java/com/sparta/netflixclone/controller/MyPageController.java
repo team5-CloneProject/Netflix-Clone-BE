@@ -28,15 +28,8 @@ public class MyPageController {
 
     private final MyPageService myPageService;
 
-    @Operation(summary = "댓글 추가 메서드", description = "댓글 추가 메서드 입니다.")
-    @GetMapping("/abc4")
-    public ApiResponseDto<SuccessResponse> abc(){
 
-//        return ResponseUtils.ok(DTO);
-        throw new CustomException(ExceptionEnum.JWT_EXPIRED_TOKEN);
-//        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"로그인성공"));
-
-    }
+    @Operation(summary = "내 정보 수정 메서드", description = "내 정보 수정 메서드 입니다.")
 
     @PostMapping("/mypage")
     public ApiResponseDto<SuccessResponse> uploadFile(@RequestParam("images") MultipartFile multipartFile, @RequestParam("nickname") String nickname, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
@@ -44,6 +37,8 @@ public class MyPageController {
         return myPageService.profileSave(multipartFile, nickname, userDetails.getMember());
     }
 
+
+    @Operation(summary = "내 정보 확인 메서드", description = "내 정보 확인 메서드 입니다.")
 
     @GetMapping("/mypage")
     public ApiResponseDto<MemberResponseDto> getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails){

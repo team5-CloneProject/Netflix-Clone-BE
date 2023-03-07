@@ -28,16 +28,8 @@ import javax.validation.Valid;
 public class MemberController {
     private final MemberService memberService;
 
-    @Operation(summary = "댓글 추가 메서드", description = "댓글 추가 메서드 입니다.")
-    @GetMapping("/abc2")
-    public ApiResponseDto<SuccessResponse> abc(){
 
-//        return ResponseUtils.ok(DTO);
-//        throw new CustomException(ExceptionEnum.JWT_EXPIRED_TOKEN);
-        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"로그인성공"));
-
-    }
-
+    @Operation(summary = "회원가입 메서드", description = "회원가입 메서드 입니다.")
     @PostMapping("/signup")
     public ApiResponseDto<SuccessResponse> signup(@Valid @RequestBody SignupRequestDto signupRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -46,11 +38,13 @@ public class MemberController {
         return memberService.signup(signupRequestDto);
     }
 
+    @Operation(summary = "로그인 메서드", description = "로그인 메서드 입니다.")
     @PostMapping("/login")
     public ApiResponseDto<SuccessResponse> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         return memberService.login(loginRequestDto, response);
     }
 
+    @Operation(summary = "가입자 확인 메서드", description = "가입자 확인 메서드 입니다.")
     @GetMapping
     public ApiResponseDto<SuccessResponse> getMemberByEmail(@RequestParam String email) {
         // email에 해당하는 멤버 정보를 조회하는 로직 구현

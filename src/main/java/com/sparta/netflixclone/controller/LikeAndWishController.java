@@ -22,16 +22,19 @@ public class LikeAndWishController {
 
     private final LikeAndWishService likeAndWishService;
 
-    @PutMapping("/movie/like/{id}")
+    @Operation(summary = "좋아요 메서드", description = "좋아요 메서드 입니다.")
+    @PostMapping ("/movie/like/{id}")
     public ApiResponseDto<SuccessResponse> createLike(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody LikeRequestDto likeRequestDto) {
         return likeAndWishService.createLike(id, userDetails.getUser(), likeRequestDto);
     }
 
-    @PutMapping("/movie/dislike/{id}")
+    @Operation(summary = "싫어요 메서드", description = "싫어요 메서드 입니다.")
+    @PostMapping("/movie/dislike/{id}")
     public ApiResponseDto<SuccessResponse> createDislike(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody LikeRequestDto likeRequestDto) {
         return likeAndWishService.createDisLike(id, userDetails.getUser(), likeRequestDto);
     }
 
+    @Operation(summary = "찜하기 메서드", description = "찜하기 메서드 입니다.")
     @PostMapping("/post/like/{id}")
     public ApiResponseDto<SuccessResponse> postLike(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return likeAndWishService.postLike(id, userDetails.getUser());
