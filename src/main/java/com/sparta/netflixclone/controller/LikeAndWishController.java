@@ -22,23 +22,12 @@ public class LikeAndWishController {
 
     private final LikeAndWishService likeAndWishService;
 
-    @Operation(summary = "댓글 추가 메서드", description = "댓글 추가 메서드 입니다.")
-    @GetMapping("/abc1")
-    public ApiResponseDto<SuccessResponse> abc(){
-
-//        return ResponseUtils.ok(DTO);
-//        throw new CustomException(ExceptionEnum.JWT_EXPIRED_TOKEN);
-        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"로그인성공"));
-
-    }
-
-    @PutMapping("/movies/likes/{id}")
+    @PutMapping("/movie/like/{id}")
     public ApiResponseDto<SuccessResponse> createLike(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody LikeRequestDto likeRequestDto) {
         return likeAndWishService.createLike(id, userDetails.getUser(), likeRequestDto);
     }
 
-
-    @PutMapping("/movies/dislikes/{id}")
+    @PutMapping("/movie/dislike/{id}")
     public ApiResponseDto<SuccessResponse> createDislike(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody LikeRequestDto likeRequestDto) {
         return likeAndWishService.createDisLike(id, userDetails.getUser(), likeRequestDto);
     }
