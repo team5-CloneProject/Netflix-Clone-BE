@@ -6,6 +6,7 @@ import com.sparta.netflixclone.common.SuccessResponse;
 import com.sparta.netflixclone.dto.LikeRequestDto;
 import com.sparta.netflixclone.dto.MovieResponseDto;
 import com.sparta.netflixclone.dto.MovieResultResponseDto;
+import com.sparta.netflixclone.dto.MovieResultWishListResponseDto;
 import com.sparta.netflixclone.entity.Likes;
 import com.sparta.netflixclone.entity.Member;
 import com.sparta.netflixclone.entity.WishList;
@@ -96,10 +97,10 @@ public class LikeAndWishService {
         if (wishLists.size() ==0){
             return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"찜한 자료가 없습니다."));
         }
-        List<MovieResultResponseDto> MovieResultResponseDtos = new ArrayList<>();
+        List<MovieResultWishListResponseDto> MovieResultResponseDtos = new ArrayList<>();
         for (WishList wishList : wishLists){
             RestTemplate restTemplate = new RestTemplate();
-            MovieResultResponseDtos.add(restTemplate.getForObject("https://api.themoviedb.org/3/movie/"+wishList.getMovieId()+"?api_key="+key+"&language=ko-kr", MovieResultResponseDto.class));
+            MovieResultResponseDtos.add(restTemplate.getForObject("https://api.themoviedb.org/3/movie/"+wishList.getMovieId()+"?api_key="+key+"&language=ko-kr", MovieResultWishListResponseDto.class));
         }
 
         return ResponseUtils.ok(MovieResultResponseDtos);

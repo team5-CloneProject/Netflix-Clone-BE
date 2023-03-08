@@ -30,6 +30,33 @@ public class MovieService {
     public ApiResponseDto<MovieResponseDto> moviePopular(int page,Member member) {
         RestTemplate restTemplate = new RestTemplate();
         MovieResponseDto movieResponse = restTemplate.getForObject("https://api.themoviedb.org/3/movie/popular?api_key=" + key + "&language=ko-KR&page=" + page + "&region=KR", MovieResponseDto.class);
+        return getMovieResponseDtoApiResponseDto(member, movieResponse);
+    }
+
+    public ApiResponseDto<MovieResponseDto> movieTopRated(int page,Member member) {
+        RestTemplate restTemplate = new RestTemplate();
+        MovieResponseDto movieResponse = restTemplate.getForObject("https://api.themoviedb.org/3/movie/top_rated?api_key=" + key + "&language=ko-KR&page=" + page + "&region=KR", MovieResponseDto.class);
+        return getMovieResponseDtoApiResponseDto(member, movieResponse);
+    }
+
+    public ApiResponseDto<MovieResponseDto> movieNowPlaying(int page,Member member) {
+        RestTemplate restTemplate = new RestTemplate();
+        MovieResponseDto movieResponse = restTemplate.getForObject("https://api.themoviedb.org/3/movie/now_playing?api_key=" + key + "&language=ko-KR&page=" + page + "&region=KR", MovieResponseDto.class);
+        return getMovieResponseDtoApiResponseDto(member, movieResponse);
+    }
+
+    public ApiResponseDto<MovieResponseDto> movieSearch(int page,String query,Member member) {
+        RestTemplate restTemplate = new RestTemplate();
+        MovieResponseDto movieResponse = restTemplate.getForObject("https://api.themoviedb.org/3/search/multi?api_key="+key+"&language=ko-KR&query="+query+"&page="+page+"&include_adult=false&region=KR", MovieResponseDto.class);
+        return getMovieResponseDtoApiResponseDto(member, movieResponse);
+    }
+    public ApiResponseDto<MovieResponseDto> movieTvPopular(int page,Member member) {
+        RestTemplate restTemplate = new RestTemplate();
+        MovieResponseDto movieResponse = restTemplate.getForObject("https://api.themoviedb.org/3/tv/popular?api_key="+key+"&language=en-US&page="+page, MovieResponseDto.class);
+        return getMovieResponseDtoApiResponseDto(member, movieResponse);
+    }
+
+    private ApiResponseDto<MovieResponseDto> getMovieResponseDtoApiResponseDto(Member member, MovieResponseDto movieResponse) {
         List<MovieResultResponseDto> movieResultList = movieResponse.getResults();
         for (MovieResultResponseDto movieResult : movieResultList){
             Optional<Likes> likes =  likesRepository.findByMovieIdAndMemberId(movieResult.getId(),member.getId());
@@ -38,29 +65,6 @@ public class MovieService {
                 movieResult.setWish(true);
             }
         }
-        return ResponseUtils.ok(movieResponse);
-    }
-
-    public ApiResponseDto<MovieResponseDto> movieTopRated(int page) {
-        RestTemplate restTemplate = new RestTemplate();
-        MovieResponseDto movieResponse = restTemplate.getForObject("https://api.themoviedb.org/3/movie/top_rated?api_key=" + key + "&language=ko-KR&page=" + page + "&region=KR", MovieResponseDto.class);
-        return ResponseUtils.ok(movieResponse);
-    }
-
-    public ApiResponseDto<MovieResponseDto> movieNowPlaying(int page) {
-        RestTemplate restTemplate = new RestTemplate();
-        MovieResponseDto movieResponse = restTemplate.getForObject("https://api.themoviedb.org/3/movie/now_playing?api_key=" + key + "&language=ko-KR&page=" + page + "&region=KR", MovieResponseDto.class);
-        return ResponseUtils.ok(movieResponse);
-    }
-
-    public ApiResponseDto<MovieResponseDto> movieSearch(int page,String query) {
-        RestTemplate restTemplate = new RestTemplate();
-        MovieResponseDto movieResponse = restTemplate.getForObject("https://api.themoviedb.org/3/search/multi?api_key="+key+"&language=ko-KR&query="+query+"&page="+page+"&include_adult=false&region=KR", MovieResponseDto.class);
-        return ResponseUtils.ok(movieResponse);
-    }
-    public ApiResponseDto<MovieResponseDto> movieTvPopular(int page) {
-        RestTemplate restTemplate = new RestTemplate();
-        MovieResponseDto movieResponse = restTemplate.getForObject("https://api.themoviedb.org/3/tv/popular?api_key="+key+"&language=en-US&page="+page, MovieResponseDto.class);
         return ResponseUtils.ok(movieResponse);
     }
 
