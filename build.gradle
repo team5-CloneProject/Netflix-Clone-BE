@@ -45,6 +45,11 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.11'
 	implementation 'mysql:mysql-connector-java:8.0.27'
+
+	// Marvin
+	implementation 'com.github.downgoon:marvin:1.5.5'
+	implementation 'com.github.downgoon:MarvinPlugins:1.5.5'
+	compileOnly group: 'org.springframework', name: 'spring-test'
 }
 
 tasks.named('test') {

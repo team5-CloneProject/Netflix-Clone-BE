@@ -21,7 +21,7 @@ public enum ExceptionEnum {
     INVALID_EMAIL_REG(400,"이메일 형식이 아닙니다"),
     INVALID_PASSWD_REG(400,"패스워드는 영문자/숫자/특수문자 포함 8자리 이상입니다."),
 
-    WRONG_IMAGE_VALUE(400, ".png, .jpg 형식의 이미지 파일만 업로드 가능합니다.");
+    WRONG_IMAGE_VALUE(400, "png, jpg, jpeg 형식의 이미지 파일만 업로드 가능합니다.");
 
     
 

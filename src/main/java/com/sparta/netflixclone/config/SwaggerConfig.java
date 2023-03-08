@@ -32,6 +32,5 @@ public class SwaggerConfig {
                 .info(new Info().title("넷플릭스 API")
                         .description("넷플릭스 API입니다")
                         .version("0.0.1"));
-
     }
 }

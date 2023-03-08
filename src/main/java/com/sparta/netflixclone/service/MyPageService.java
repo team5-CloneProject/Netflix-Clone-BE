@@ -42,10 +42,13 @@ public class MyPageService {
                 () -> new CustomException(ExceptionEnum.NOT_EXIST_USER)
         );
 
-        if (multipartFile != null) {
-            String url = s3Upload.upload(multipartFile);
-            findMember.update(url, nickname);
+        if(findMember.getImage() != null && !findMember.getImage().equals("https://netflix-clone-image.s3.ap-northeast-2.amazonaws.com/usericon.png")){
+            s3Upload.deleteS3File(findMember.getImage());
         }
+
+        String url = s3Upload.upload(multipartFile);
+        findMember.update(url, nickname);
+
         return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "프로필 수정 완료"));
     }
 }
