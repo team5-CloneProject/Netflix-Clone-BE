@@ -4,6 +4,8 @@ import com.sparta.netflixclone.common.ApiResponseDto;
 import com.sparta.netflixclone.common.ResponseUtils;
 import com.sparta.netflixclone.common.SuccessResponse;
 import com.sparta.netflixclone.dto.LikeRequestDto;
+import com.sparta.netflixclone.dto.MovieResponseDto;
+import com.sparta.netflixclone.dto.MovieResultResponseDto;
 import com.sparta.netflixclone.entity.Likes;
 import com.sparta.netflixclone.entity.Member;
 import com.sparta.netflixclone.entity.WishList;
@@ -12,10 +14,14 @@ import com.sparta.netflixclone.exception.CustomException;
 import com.sparta.netflixclone.repository.LikesRepository;
 import com.sparta.netflixclone.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.sparta.netflixclone.entity.enumclass.ExceptionEnum.WRONG_VALUE;
@@ -25,6 +31,9 @@ import static com.sparta.netflixclone.entity.enumclass.ExceptionEnum.WRONG_VALUE
 public class LikeAndWishService {
     private final LikesRepository likesRepository;
     private final WishListRepository wishListRepository;
+
+    @Value("${tmdb.key}")
+    private String key;
     @Transactional
     public ApiResponseDto<SuccessResponse> createLike(Long id, Member member, LikeRequestDto likeRequestDto) {
         if (!likeRequestDto.getStatus().equals(LikeStatus.LIKE)) {
@@ -80,5 +89,21 @@ public class LikeAndWishService {
 
         wishListRepository.saveAndFlush(WishList.of(id, member));
         return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"찜하기 등록 완료"));
+    }
+
+    public ApiResponseDto<?> postLikeList( Member user) {
+        List<WishList> wishLists = wishListRepository.findAllByMemberId(user.getId());
+        if (wishLists.size() ==0){
+            return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"찜한 자료가 없습니다."));
+        }
+        List<MovieResultResponseDto> MovieResultResponseDtos = new ArrayList<>();
+        for (WishList wishList : wishLists){
+            RestTemplate restTemplate = new RestTemplate();
+            MovieResultResponseDtos.add(restTemplate.getForObject("https://api.themoviedb.org/3/movie/"+wishList.getMovieId()+"?api_key="+key+"&language=ko-kr", MovieResultResponseDto.class));
+        }
+
+        return ResponseUtils.ok(MovieResultResponseDtos);
+
+
     }
 }

@@ -39,4 +39,10 @@ public class LikeAndWishController {
     public ApiResponseDto<SuccessResponse> postLike(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return likeAndWishService.postLike(id, userDetails.getUser());
     }
+
+    @Operation(summary = "찜한 목록 메서드", description = "찜한 목록 메서드 입니다.")
+    @GetMapping("/post/like/")
+    public ApiResponseDto<?> postLikeList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return likeAndWishService.postLikeList(userDetails.getUser());
+    }
 }
