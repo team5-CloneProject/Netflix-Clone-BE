@@ -15,9 +15,11 @@ import com.sparta.netflixclone.exception.CustomException;
 import com.sparta.netflixclone.repository.LikesRepository;
 import com.sparta.netflixclone.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
@@ -29,6 +31,7 @@ import static com.sparta.netflixclone.entity.enumclass.ExceptionEnum.WRONG_VALUE
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LikeAndWishService {
     private final LikesRepository likesRepository;
     private final WishListRepository wishListRepository;
@@ -100,7 +103,14 @@ public class LikeAndWishService {
         List<MovieResultWishListResponseDto> MovieResultResponseDtos = new ArrayList<>();
         for (WishList wishList : wishLists){
             RestTemplate restTemplate = new RestTemplate();
-            MovieResultResponseDtos.add(restTemplate.getForObject("https://api.themoviedb.org/3/movie/"+wishList.getMovieId()+"?api_key="+key+"&language=ko-kr", MovieResultWishListResponseDto.class));
+            try {
+                MovieResultWishListResponseDto movieResultWishListResponseDto = restTemplate.getForObject("https://api.themoviedb.org/3/movie/" + wishList.getMovieId() + "?api_key=" + key + "&language=ko-kr", MovieResultWishListResponseDto.class);
+                MovieResultResponseDtos.add(movieResultWishListResponseDto);
+            }catch (HttpClientErrorException e){
+                log.info(e.getMessage(), "INFO");
+
+            }
+
         }
 
         return ResponseUtils.ok(MovieResultResponseDtos);
