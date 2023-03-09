@@ -58,10 +58,10 @@ public class S3Upload {
 
             File file = new File(System.getProperty("user.dir") + saveFileName);
 
-            // 이미지 리사이징
-            MultipartFile resizedFile = resizeImage(saveFileName,ext,uploadFile,300);
+/*            // 이미지 리사이징
+            MultipartFile resizedFile = resizeImage(saveFileName,ext,uploadFile,300);*/
 
-            resizedFile.transferTo(file);
+            uploadFile.transferTo(file);
             uploadOnS3(saveFileName, file);
 
             url = defaultUrl + saveFileName;
@@ -99,7 +99,7 @@ public class S3Upload {
         amazonS3.deleteObject(new DeleteObjectRequest(bucket,delFileName));
     }
 
-    // 이미지 리사이징
+/*    // 이미지 리사이징
     MultipartFile resizeImage(String fileName, String fileFormatName, MultipartFile originalImage, int imageSize){
         try{
             BufferedImage image = ImageIO.read(originalImage.getInputStream());
@@ -124,5 +124,5 @@ public class S3Upload {
         } catch (IOException e) {
             throw new CustomException(ExceptionEnum.WRONG_VALUE);
         }
-    }
+    }*/
 }
