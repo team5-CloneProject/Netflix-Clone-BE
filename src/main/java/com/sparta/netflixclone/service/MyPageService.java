@@ -46,15 +46,8 @@ public class MyPageService {
             s3Upload.deleteS3File(findMember.getImage());
         }
 
-        if(multipartFile.isEmpty()){
-            findMember.update(findMember.getImage(), nickname);
-        } else if(nickname.isEmpty()) {
-            String url = s3Upload.upload(multipartFile);
-            findMember.update(url, findMember.getNickname());
-        } else {
-            String url = s3Upload.upload(multipartFile);
-            findMember.update(url, nickname);
-        }
+        String url = s3Upload.upload(multipartFile);
+        findMember.update(url, nickname);
 
         return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "프로필 수정 완료"));
     }
